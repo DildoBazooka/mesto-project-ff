@@ -25,8 +25,8 @@ function deleteCard(cardElement) {
 
 function renderCards(initialCards) {
     const cardsContainer = document.querySelector(".places__list");
-    initialCards.forEach((cardData) => {
-      const card = createCard(cardData, deleteCard);
+    initialCards.forEach((data) => {
+      const card = createCard(data, deleteCard);
       cardsContainer.append(card);
     });
 }
