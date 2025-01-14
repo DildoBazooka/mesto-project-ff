@@ -1,4 +1,4 @@
-import {initialCards} from './scripts/cards.js';
+import {initialCards} from './components/cards.js';
 import './components/newcards.js';
 import './components/profile.js';
 import {openPopup} from './components/popup.js';
