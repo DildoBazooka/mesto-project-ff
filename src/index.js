@@ -1,58 +1,67 @@
 import {initialCards} from './components/cards.js';
-import './components/newcards.js';
-import './components/profile.js';
-import {openPopup} from './components/popup.js';
-import './pages/index.css'; 
+import {createCard, deleteCard, handleLikeClick, handleImageClick} from './components/card.js';
+import {openPopup, closePopup} from './components/modal.js';
+import './pages/index.css';
 
-export function createCard(data, deleteCard) {
-    const cardTemplate = document.querySelector("#card-template").content;
-    const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
-    const cardImage = cardElement.querySelector(".card__image");
-    const likeButton = cardElement.querySelector('.card__like-button');
-    cardImage.src = data.link;
-    cardImage.alt = data.name;
-    cardElement.querySelector(".card__image").alt = data.name;
-    cardElement.querySelector(".card__title").textContent = data.name;
-    const deleteButton = cardElement.querySelector(".card__delete-button");
-
-    deleteButton.addEventListener("click", () => {
-        deleteCard(cardElement);
-    });
-
-    likeButton.addEventListener('click', function (evt) {
-        if (evt.target.classList.contains('card__like-button')) {
-          evt.target.classList.toggle('card__like-button_is-active');
-        }
-    });
-
-    const popupImage = document.querySelector('.popup_type_image');
-    const popupImageElement = popupImage.querySelector('.popup__image');
-    const popupCaption = popupImage.querySelector('.popup__caption');
-
-    cardImage.addEventListener('click', () => {
-        popupImageElement.src = data.link;
-        popupImageElement.alt = data.name;
-        popupCaption.textContent = data.name;
-        openPopup(popupImage);
-    });
-
-    return cardElement;
-}
-
-export function deleteCard(cardElement) {
-    cardElement.remove();
-}
+const popupEdit = document.querySelector('.popup_type_edit');
+const profileEditForm = popupEdit.querySelector('.popup__form');
+const nameInput = profileEditForm.querySelector('.popup__input_type_name');
+const jobInput = profileEditForm.querySelector('.popup__input_type_description');
+const profileName = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
+const addCardPopup = document.querySelector('.popup_type_new-card');
+const addCardButton = document.querySelector('.profile__add-button');
+const addCardForm = addCardPopup.querySelector('.popup__form');
+const editButton = document.querySelector('.profile__edit-button');
 
 function renderCards(initialCards) {
     const cardsContainer = document.querySelector(".places__list");
+
     initialCards.forEach((data) => {
-      const card = createCard(data, deleteCard);
-      cardsContainer.append(card);
+        const card = createCard(data, handleLikeClick, handleImageClick, deleteCard); // Передача всех обработчиков
+        cardsContainer.append(card);
     });
 }
 
+addCardButton.addEventListener('click', () => {
+    addCardForm.reset();
+    openPopup(addCardPopup);
+});
+
+function addCard(data) {
+    const cardsContainer = document.querySelector('.places__list');
+    const cardElement = createCard(data, handleLikeClick, handleImageClick, deleteCard);
+    cardsContainer.prepend(cardElement);
+}
+
+addCardForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    
+    const name = addCardForm.querySelector('.popup__input_type_card-name').value;
+    const link = addCardForm.querySelector('.popup__input_type_url').value;
+    
+    addCard({ name, link });
+    
+    closePopup(addCardPopup);
+    addCardForm.reset();
+});
+
+function handleProfileEditFormSubmit(evt) {
+   evt.preventDefault(); 
+
+   profileName.textContent = nameInput.value;
+   profileDescription.textContent = jobInput.value;
+
+   closePopup(popupEdit);
+}
+
+profileEditForm.addEventListener('submit', handleProfileEditFormSubmit);
+
+editButton.addEventListener('click', () => {
+   nameInput.value = profileName.textContent;
+   jobInput.value = profileDescription.textContent;
+
+   openPopup(popupEdit);
+});
+
 renderCards(initialCards);
-
-
-
-
