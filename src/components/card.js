@@ -1,5 +1,3 @@
-import {openPopup} from './modal.js';
-
 export function createCard(data, handleLikeClick, handleImageClick, deleteCard) {
     const cardTemplate = document.querySelector("#card-template").content;
     const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
@@ -28,18 +26,6 @@ export function createCard(data, handleLikeClick, handleImageClick, deleteCard) 
 
 export function handleLikeClick(likeButton) {
     likeButton.classList.toggle('card__like-button_is-active');
-}
-
-export function handleImageClick(data) {
-    const popupImage = document.querySelector('.popup_type_image');
-    const popupImageElement = popupImage.querySelector('.popup__image');
-    const popupCaption = popupImage.querySelector('.popup__caption');
-
-    popupImageElement.src = data.link;
-    popupImageElement.alt = data.name;
-    popupCaption.textContent = data.name;
-
-    openPopup(popupImage);
 }
 
 export function deleteCard(cardElement) {

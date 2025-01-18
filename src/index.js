@@ -1,5 +1,5 @@
 import {initialCards} from './components/cards.js';
-import {createCard, deleteCard, handleLikeClick, handleImageClick} from './components/card.js';
+import {createCard, deleteCard, handleLikeClick} from './components/card.js';
 import {openPopup, closePopup} from './components/modal.js';
 import './pages/index.css';
 
@@ -13,12 +13,23 @@ const addCardPopup = document.querySelector('.popup_type_new-card');
 const addCardButton = document.querySelector('.profile__add-button');
 const addCardForm = addCardPopup.querySelector('.popup__form');
 const editButton = document.querySelector('.profile__edit-button');
+const cardsContainer = document.querySelector('.places__list');
+const popupImage = document.querySelector('.popup_type_image');
+const popupImageElement = popupImage.querySelector('.popup__image');
+const popupCaption = popupImage.querySelector('.popup__caption');
+
+export function handleImageClick(data) {
+    
+    popupImageElement.src = data.link;
+    popupImageElement.alt = data.name;
+    popupCaption.textContent = data.name;
+
+    openPopup(popupImage);
+}
 
 function renderCards(initialCards) {
-    const cardsContainer = document.querySelector(".places__list");
-
     initialCards.forEach((data) => {
-        const card = createCard(data, handleLikeClick, handleImageClick, deleteCard); // Передача всех обработчиков
+        const card = createCard(data, handleLikeClick, handleImageClick, deleteCard);
         cardsContainer.append(card);
     });
 }
@@ -29,7 +40,6 @@ addCardButton.addEventListener('click', () => {
 });
 
 function addCard(data) {
-    const cardsContainer = document.querySelector('.places__list');
     const cardElement = createCard(data, handleLikeClick, handleImageClick, deleteCard);
     cardsContainer.prepend(cardElement);
 }
