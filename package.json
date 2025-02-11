@@ -4,8 +4,7 @@
   "description": "ссылка на проект: https://github.com/DildoBazooka/mesto-project-ff.git",
   "main": "index.js",
   "dependencies": {
-    "core-js": "^3.39.0",
-    "jquery": "^3.7.1"
+    "core-js": "^3.39.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",

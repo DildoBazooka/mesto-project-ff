@@ -4,7 +4,7 @@
 
 github-pages: https://dildobazooka.github.io/mesto-project-ff/
 
-первая попытка
+Вторая попытка
 
 Третье знакомство с javaScript, знакомство с валидацией форм и интеграция с API
 

@@ -13,18 +13,10 @@ export function createCard(data, handleLikeClick, handleImageClick, deleteCard, 
     cardElement.querySelector(".card__title").textContent = data.name;
     likeCount.textContent = data.likes.length;
 
-    if (data.owner._id === userId) {
-        deleteButton.addEventListener("click", () => {
-            deleteCardApi(data._id) 
-                .then(() => {
-                     deleteCard(cardElement);
-                })
-                .catch((err) => {
-                    console.log(err); 
-                });
-        });
+    if (data.owner._id !== userId) {
+        deleteButton.remove();
     } else {
-        deleteButton.remove(); 
+        deleteButton.addEventListener("click", () => deleteCard(data._id, cardElement));
     }
 
     const isLikedByMe = data.likes.some(like => like._id === userId);
@@ -59,7 +51,13 @@ export function handleLikeClick(likeButton, cardId, likeCount) {
           }); 
 }
 
-export function deleteCard(cardElement) {
-    cardElement.remove();
+export function deleteCard(cardId, cardElement) {
+    deleteCardApi(cardId)
+        .then(() => {
+            cardElement.remove();
+        })
+        .catch((err) => {
+            console.log(`Ошибка удаления карточки: ${err}`);
+        });
 }
 

@@ -18,6 +18,8 @@ const cardsContainer = document.querySelector('.places__list');
 const popupImage = document.querySelector('.popup_type_image');
 const popupImageElement = popupImage.querySelector('.popup__image');
 const popupCaption = popupImage.querySelector('.popup__caption');
+const saveButton = profileEditForm.querySelector('.popup__button');
+const submitCardButton = addCardForm.querySelector('.popup__button');
 
 const avatarPopup = document.querySelector(".popup_type_avatar");
 const avatarForm = avatarPopup.querySelector(".popup__form");
@@ -27,7 +29,6 @@ const profileAvatarContainer = document.querySelector(".profile__image");
 const submitButton = avatarPopup.querySelector(".popup__button");
 
 let userId;
-
 
 const validationConfig = {
     formSelector: '.popup__form',
@@ -46,6 +47,7 @@ Promise.all([getUserInfo(), getInitialCards()])
         profileName.textContent = userData.name;
         profileDescription.textContent = userData.about;
         profileAvatar.src = userData.avatar;
+        userId = userData._id;
 
         cards.forEach((cardData) => {
             const cardElement = createCard(cardData, handleLikeClick, handleImageClick, deleteCard, userData._id);
@@ -64,7 +66,6 @@ editButton.addEventListener('click', () => {
 function handleProfileEditFormSubmit(evt) {
     evt.preventDefault();
 
-    const saveButton = profileEditForm.querySelector('.popup__button');
     saveButton.textContent = 'Сохранение...';
 
     updateUserInfo(nameInput.value, jobInput.value)
@@ -120,22 +121,20 @@ addCardForm.addEventListener('submit', (evt) => {
 
     const name = addCardForm.querySelector('.popup__input_type_card-name').value;
     const link = addCardForm.querySelector('.popup__input_type_url').value;
-    const submitCardButton = addCardForm.querySelector('.popup__button');
 
     submitCardButton.textContent = "Сохранение...";
 
     addNewCard(name, link)
-        .then((cardData) => {
-            cardData.owner = { _id: userId };
-            addCard(cardData); 
-            closePopup(addCardPopup);
-            addCardForm.reset();
-            clearValidation(addCardForm, validationConfig);
-        })
-        .catch((err) => console.error(`Ошибка добавления карточки: ${err}`))
-        .finally(() => {
-            submitCardButton.textContent = "Сохранить";
-        });
+    .then((cardData) => {
+        addCard(cardData); // Добавляем карточку
+        closePopup(addCardPopup);
+        addCardForm.reset();
+        clearValidation(addCardForm, validationConfig);
+    })
+    .catch((err) => console.error(`Ошибка добавления карточки: ${err}`))
+    .finally(() => {
+        submitCardButton.textContent = "Сохранить";
+    });
 });
 
 export function handleImageClick(data) {
