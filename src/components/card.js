@@ -13,15 +13,24 @@ export function createCard(data, handleLikeClick, handleImageClick, deleteCard, 
     cardElement.querySelector(".card__title").textContent = data.name;
     likeCount.textContent = data.likes.length;
 
-    deleteButton.addEventListener("click", () => {
-        deleteCardApi(data._id) 
-        .then(() => {
-            deleteCard(cardElement);
-        })
-        .catch((err) => {
-            console.log(err); 
-          });
-    });
+    if (data.owner._id === userId) {
+        deleteButton.addEventListener("click", () => {
+            deleteCardApi(data._id) 
+                .then(() => {
+                     deleteCard(cardElement);
+                })
+                .catch((err) => {
+                    console.log(err); 
+                });
+        });
+    } else {
+        deleteButton.remove(); 
+    }
+
+    const isLikedByMe = data.likes.some(like => like._id === userId);
+    if (isLikedByMe) {
+        likeButton.classList.add('card__like-button_is-active');
+    }
     
     likeButton.addEventListener('click', () => {
         handleLikeClick(likeButton, data._id, likeCount);
@@ -41,6 +50,7 @@ export function handleLikeClick(likeButton, cardId, likeCount) {
 
     likeRequest
         .then((updatedCard) => {
+
             likeButton.classList.toggle('card__like-button_is-active');
             likeCount.textContent = updatedCard.likes.length;
         })
@@ -51,6 +61,5 @@ export function handleLikeClick(likeButton, cardId, likeCount) {
 
 export function deleteCard(cardElement) {
     cardElement.remove();
-    cardElement = null;
 }
 

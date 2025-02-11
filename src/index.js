@@ -26,6 +26,8 @@ const profileAvatar = document.querySelector(".profile__image img");
 const profileAvatarContainer = document.querySelector(".profile__image");
 const submitButton = avatarPopup.querySelector(".popup__button");
 
+let userId;
+
 
 const validationConfig = {
     formSelector: '.popup__form',
@@ -40,12 +42,13 @@ enableValidation(validationConfig);
 
 Promise.all([getUserInfo(), getInitialCards()])
     .then(([userData, cards]) => {
+
         profileName.textContent = userData.name;
         profileDescription.textContent = userData.about;
         profileAvatar.src = userData.avatar;
 
         cards.forEach((cardData) => {
-            const cardElement = createCard(cardData, handleLikeClick, handleImageClick, deleteCard);
+            const cardElement = createCard(cardData, handleLikeClick, handleImageClick, deleteCard, userData._id);
             cardsContainer.append(cardElement);
         });
     })
@@ -108,7 +111,7 @@ addCardButton.addEventListener('click', () => {
 });
 
 function addCard(data) {
-    const cardElement = createCard(data, handleLikeClick, handleImageClick, deleteCard);
+    const cardElement = createCard(data, handleLikeClick, handleImageClick, deleteCard, userId);
     cardsContainer.prepend(cardElement);
 }
 
@@ -123,6 +126,7 @@ addCardForm.addEventListener('submit', (evt) => {
 
     addNewCard(name, link)
         .then((cardData) => {
+            cardData.owner = { _id: userId };
             addCard(cardData); // Добавляем карточку через уже существующую функцию
             closePopup(addCardPopup);
             addCardForm.reset();

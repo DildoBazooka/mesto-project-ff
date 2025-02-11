@@ -1,8 +1,10 @@
-# Проектная работа Mesto #version 2
+# Проектная работа Mesto #version 3
 
 ссылка на проект: https://github.com/DildoBazooka/mesto-project-ff.git
 
-Третья попытка
+github-pages: https://dildobazooka.github.io/mesto-project-ff/
 
-Второе знакомство с javaScript, сборка проекта Webpack работа с формами и обработка событий
+первая попытка
+
+Третье знакомство с javaScript, знакомство с валидацией форм и интеграция с API
 
