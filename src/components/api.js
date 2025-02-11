@@ -19,7 +19,6 @@ export const getUserInfo = () => {
     }).then(checkResponse);
 };
   
-  // Получение карточек
 export const getInitialCards = () => {
     return fetch(`${config.baseUrl}/cards`, {
       headers: config.headers

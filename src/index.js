@@ -127,7 +127,7 @@ addCardForm.addEventListener('submit', (evt) => {
     addNewCard(name, link)
         .then((cardData) => {
             cardData.owner = { _id: userId };
-            addCard(cardData); // Добавляем карточку через уже существующую функцию
+            addCard(cardData); 
             closePopup(addCardPopup);
             addCardForm.reset();
             clearValidation(addCardForm, validationConfig);
