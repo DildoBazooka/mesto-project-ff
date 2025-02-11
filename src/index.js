@@ -126,7 +126,7 @@ addCardForm.addEventListener('submit', (evt) => {
 
     addNewCard(name, link)
     .then((cardData) => {
-        addCard(cardData); // Добавляем карточку
+        addCard(cardData);
         closePopup(addCardPopup);
         addCardForm.reset();
         clearValidation(addCardForm, validationConfig);
